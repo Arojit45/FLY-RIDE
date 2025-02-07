@@ -9,10 +9,11 @@ connectDB();
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({extented: true}));
 
 
 app.get('/', (req, res) => {
     res.send('Hello World');
 });
-app.use('/api/user', userRoutes);
+app.use('/users', userRoutes);
 module.exports = app;

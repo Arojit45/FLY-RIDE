@@ -3,12 +3,12 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const userSchema = new mongoose.Schema({
 fullName: {
-    FirstName: {
+    firstName: {
       type: String,
       require: true,
       minlength: 3,
     },
-    LastName: {
+    lastName: {
       type: String,
       require: true,
       minlength: 3,
@@ -38,8 +38,9 @@ userSchema.comparePassword = async function (password){
     return await bcrypt.compare(password,this.password);
 
 }
-userSchema.statics.findByCredentials = async (password) => {
-    return await bcrypt.hash(password, 10);
+userSchema.statics.hashPassword = async function (password) {
+  const salt = await bcrypt.genSalt(10);
+  return await bcrypt.hash(password, salt);
 };
 const userModel = mongoose.model("User", userSchema);
 module.exports = userModel;
