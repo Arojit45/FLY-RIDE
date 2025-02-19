@@ -1,9 +1,10 @@
 import React from "react";
-import bgm from "../assets/Homescreen.jpg";
+import bgm from "../assets/Airports--Reserve-35.webp";
 import { Link } from "react-router-dom";
 import Logo from "../assets/Logo.png";
 
 const Home = () => {
+  
   return (
     <div
       className="h-screen  flex pt-8  justify-between  flex-col w-full bg-red-400 "
