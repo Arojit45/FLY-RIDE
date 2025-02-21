@@ -56,7 +56,7 @@ const UserLogin = () => {
         </form>
         <p className="text-center">
           New here?
-          <Link to="/signup/" className="text-blue-600">
+          <Link to="/UserSignup" className="text-blue-600">
             Create new Account
           </Link>
         </p>
