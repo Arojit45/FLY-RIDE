@@ -13,7 +13,7 @@ module.exports.registerUser = async (req, res, next) => {
 
   const hashpassword = await usermodel.hashPassword(password);
 
-  const user = await usermodel.create({
+  const user = await userservice.create({
     firstname:fullname.firstname,
     lastname:fullname.lastname,
     email,
@@ -30,11 +30,16 @@ module.exports.loginUser=async(req,res,next)=>{
     return res.status(400).json({error:errors.array()});
   }
 
-  const { email, password}=req.body;
+  const { email, password}= req.body;
   const user = await usermodel.findOne({email}).select('+password');
   if(!user){
     return res.status(401).json({message:'Invalid email or password'});
   }
+  const isMatch = await user.matchPassword(password);
+  if(!isMatch){
+    return res.status(401).json({message:'Invalid email or password'});
+  }
   const token = user.generateAuthToken();
+
   res.status(200).json({token,user});
 };

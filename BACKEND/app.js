@@ -5,6 +5,7 @@ const app = express();
 const cors = require('cors');
 const connectDB = require('./DB/db');
 const userRoutes = require('./Routes/User.routes');
+const port = process.env.PORT || 3000;
 connectDB();
 
 app.use(cors());
@@ -16,4 +17,5 @@ app.get('/', (req, res) => {
     res.send('Hello World');
 });
 app.use('/users', userRoutes);
+
 module.exports = app;
