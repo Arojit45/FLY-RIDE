@@ -50,12 +50,12 @@ const captainSchema = new mongoose.Schema({
       required: true,
       minlength: [3, "Plate must be at least 3 characters long."],
     },
-    Capacity: {
+    capacity: {
       type: Number,
       required: true,
       minlength: [1, "Capacity must be at least 1 characters long."],
     },
-    vehicalType: {
+    vehicleType: {
       type: String,
       required: true,
       enum: ["car", "auto", "motorcycle"],
