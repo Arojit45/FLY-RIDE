@@ -1,19 +1,34 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { UserDataContext } from "../context/Usercontext";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const UserLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userdata, setUserdata] = useState({});
+  const {user, setUser} = React.useContext(UserDataContext);
+  const navigate = useNavigate();
 
   const SubmitEvent = (e) => {
     e.preventDefault();
-    setEmail("");
-    setPassword("");
-    setUserdata({
+    const userdata = {
       email: email,
       password: password,
-    });
+    };
+    const response = axios.post(
+      `${import.meta.env.VITE_BASE_URL}/users/login`,
+      userdata
+    );
+    if(response.status === 200){
+      const data = response.data;
+      setUser(data.user);
+      navigate("/Home");
+    }
+    setEmail("");
+    setPassword("");
+    
   };
   return (
     <div className="p-7 flex flex-col justify-between h-screen">
