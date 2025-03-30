@@ -11,13 +11,13 @@ const UserLogin = () => {
   const {user, setUser} = React.useContext(UserDataContext);
   const navigate = useNavigate();
 
-  const SubmitEvent = (e) => {
+  const SubmitEvent = async (e) => {
     e.preventDefault();
     const userdata = {
       email: email,
       password: password,
     };
-    const response = axios.post(
+    const response = await axios.post(
       `${import.meta.env.VITE_BASE_URL}/users/login`,
       userdata
     );
