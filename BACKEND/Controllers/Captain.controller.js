@@ -36,7 +36,7 @@ module.exports.loginCaptain = async (req,res,next) => {
     return res.status(400).json({ error: error.array()});
   }
   const {email,password} =req.body;
-  const captain = await  captainModel.findOneAndUpdate({ email }).select('+ password +');
+  const captain = await  captainModel.findOne({ email }).select('+ password +');
 
   if(!captain){
     return res.status(401).json({message:"Invalid email or password"});

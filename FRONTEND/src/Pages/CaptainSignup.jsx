@@ -20,6 +20,7 @@ const CaptainSignup = () => {
   const { captain, setCaptain } = React.useContext(CaptainDataContext);
   const submitHandler = async (e) => {
     e.preventDefault();
+
     const CaptainData = {
       fullname: {
         firstname: firstname,
@@ -34,18 +35,22 @@ const CaptainSignup = () => {
         vehicleType: vehicalvehicleType,
       },
     };
-    const response = await axios.post(
-      `${import.meta.env.VITE_BASE_URL}/captains/register`,
-      CaptainData
-    );
 
-    if(response.status==200){
-      const data =response.data
-      setCaptain(data.captain)
-      localStorage.setItem('token',data.token)
-      navigate('/Captainhome')
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/captains/register`,
+        CaptainData
+      );
+
+      if (response.status === 201) {
+        const data = response.data;
+        setCaptain(data.captain);
+        localStorage.setItem("token", data.token);
+        navigate("/Captainhome");
+      }
+    } catch (error) {
+      alert("Registration failed. Please try again.");
     }
-
 
     setEmail("");
     setPassword("");
@@ -149,9 +154,9 @@ const CaptainSignup = () => {
                 className="bg-[#eeeeee] rounded px-4 w-1/2 py-2 border text-lg placeholder:text-base"
               >
                 <option value="">VehicleType</option>
-                <option value="Car">Car</option>
-                <option value="Auto">Auto</option>
-                <option value="Bike">Bike</option>
+                <option value="car">Car</option>
+                <option value="auto">Auto</option>
+                <option value="bike">Bike</option>
               </select>
             </div>
           </div>
