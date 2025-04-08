@@ -1,23 +1,49 @@
 import React, { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import ConfirmRidePanel from "../components/ConfirmRidePanel";
 
 
 const BookingPage = () => {
-  const navigate = useNavigate()
+const [confirmRide, setConfirmRide] = useState(false)
+const confirmRideref =useRef(null)
 
+
+useGSAP(()=>{
+  if(confirmRide){
+    gsap.to(confirmRideref.current,{
+      transform:'translateY(0)'
+    })
+  }else{
+    gsap.to(confirmRideref.current,{
+      transform:'translateY(100%)'
+    })
+  }
+},[confirmRide])
  
   
   return (
-    <div className="h-screen w-screen">
-      <img className="h-full w-full object-cover  "
+    <div className="h-screen w-screen overflow-hidden">
+      <img
+        className="h-full w-full object-cover  "
         src="https://www.shutterstock.com/image-vector/city-map-dhaka-coxs-bazar-260nw-2277305657.jpg"
       />
-      <div  className="fixed w-full   z-10 bottom-0   flex flex-col  bg-white px-3 py-10 pt-14">
-        <h5 className="p-1 m-1 w-[93%] absolute top-0  text-center "><i onClick={(()=>{
-          navigate('/Home')
-        })} className="text-gray-300 text-2xl ri-arrow-down-wide-fill"></i></h5>
+      <div className="fixed w-full   z-10 bottom-0   flex flex-col  bg-white px-3 py-10 pt-14">
+        <h5 className="p-1 m-1 w-[93%] absolute top-0  text-center ">
+          <i
+            onClick={() => {
+              navigate("/Home");
+            }}
+            className="text-gray-300 text-2xl ri-arrow-down-wide-fill"
+          ></i>
+        </h5>
         <h2 className="text-2xl font-semibold mb-3">Choose a vehical</h2>
-        <div className="flex w-full items-center active:border-black border-2 mb-2 rounded-xl justify-between  p-3">
+        <div
+          onClick={() => {
+            setConfirmRide(true);
+          }}
+          className="flex w-full items-center active:border-black border-2 mb-2 rounded-xl justify-between  p-3"
+        >
           <img
             className="h-12"
             src="https://www.pngplay.com/wp-content/uploads/8/Uber-PNG-Photos.png"
@@ -37,7 +63,12 @@ const BookingPage = () => {
           </div>
           <h2 className="text-lg font-semibold">₹193.30</h2>
         </div>
-        <div className="flex w-full items-center active:border-black border-2 mb-2 rounded-xl justify-between  p-3">
+        <div
+          onClick={() => {
+            setConfirmRide(true);
+          }}
+          className="flex w-full items-center active:border-black border-2 mb-2 rounded-xl justify-between  p-3"
+        >
           <img
             className="h-12"
             src="https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_368,w_552/v1649231091/assets/2c/7fa194-c954-49b2-9c6d-a3b8601370f5/original/Uber_Moto_Orange_312x208_pixels_Mobile.png"
@@ -57,7 +88,12 @@ const BookingPage = () => {
           </div>
           <h2 className="text-lg font-semibold">₹103.30</h2>
         </div>
-        <div className="flex w-full items-center active:border-black border-2 mb-2 rounded-xl justify-between  p-3">
+        <div
+          onClick={() => {
+            setConfirmRide(true);
+          }}
+          className="flex w-full items-center active:border-black border-2 mb-2 rounded-xl justify-between  p-3"
+        >
           <img
             className="h-12"
             src="https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_368,w_552/v1648431773/assets/1d/db8c56-0204-4ce4-81ce-56a11a07fe98/original/Uber_Auto_558x372_pixels_Desktop.png"
@@ -77,6 +113,9 @@ const BookingPage = () => {
           </div>
           <h2 className="text-lg font-semibold">₹293.30</h2>
         </div>
+      </div>
+      <div ref={confirmRideref} className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12">
+        <ConfirmRidePanel />
       </div>
     </div>
   );

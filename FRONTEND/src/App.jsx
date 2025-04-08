@@ -12,6 +12,7 @@ import Captainhome from "./Pages/Captainhome";
 import CaptainProtectedWrapper from "./Pages/CaptainProtectedWrapper";
 import BookingPage from "./Pages/BookingPage";
 
+
 const App = () => {
   return (
     <div>
