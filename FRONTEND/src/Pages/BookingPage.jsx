@@ -1,12 +1,21 @@
-import React from "react";
+import React, { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 
 const BookingPage = () => {
+  const navigate = useNavigate()
+
+ 
+  
   return (
-    <div>
-      <img className="h-full w-full object-cover"
+    <div className="h-screen w-screen">
+      <img className="h-full w-full object-cover  "
         src="https://www.shutterstock.com/image-vector/city-map-dhaka-coxs-bazar-260nw-2277305657.jpg"
       />
-      <div className="fixed w-full  z-10 bottom-0   flex flex-col  bg-white px-3 py-6">
+      <div  className="fixed w-full   z-10 bottom-0   flex flex-col  bg-white px-3 py-10 pt-14">
+        <h5 className="p-1 m-1 w-[93%] absolute top-0  text-center "><i onClick={(()=>{
+          navigate('/Home')
+        })} className="text-gray-300 text-2xl ri-arrow-down-wide-fill"></i></h5>
         <h2 className="text-2xl font-semibold mb-3">Choose a vehical</h2>
         <div className="flex w-full items-center active:border-black border-2 mb-2 rounded-xl justify-between  p-3">
           <img
