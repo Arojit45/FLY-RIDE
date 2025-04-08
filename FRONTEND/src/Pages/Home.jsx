@@ -85,7 +85,7 @@ const Home = () => {
             </form>
           </div>
           <div ref={panelref} className="h-0 bg-white ">
-            <LocationSearchPanel/>
+            <LocationSearchPanel />
           </div>
         </div>
       </div>

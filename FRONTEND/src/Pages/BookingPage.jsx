@@ -2,26 +2,37 @@ import React, { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import ConfirmRidePanel from "../components/ConfirmRidePanel";
+import LookingForDriver from "../components/LookingForDriver";
 
+const BookingPage = (props) => {
+  const [confirmRide, setConfirmRide] = useState(false);
+  const [lookingForDriver, setLookingForDriver] = useState(false);
+  const confirmRideref = useRef(null);
+  const lookingForDriverref = useRef(null);
 
-const BookingPage = () => {
-const [confirmRide, setConfirmRide] = useState(false)
-const confirmRideref =useRef(null)
+  useGSAP(() => {
+    if (confirmRide) {
+      gsap.to(confirmRideref.current, {
+        transform: "translateY(0)",
+      });
+    } else {
+      gsap.to(confirmRideref.current, {
+        transform: "translateY(100%)",
+      });
+    }
+  }, [confirmRide]);
+  useGSAP(() => {
+    if (lookingForDriver) {
+      gsap.to(lookingForDriverref.current, {
+        transform: "translateY(0)",
+      });
+    } else {
+      gsap.to(lookingForDriverref.current, {
+        transform: "translateY(100%)",
+      });
+    }
+  }, [lookingForDriver]);
 
-
-useGSAP(()=>{
-  if(confirmRide){
-    gsap.to(confirmRideref.current,{
-      transform:'translateY(0)'
-    })
-  }else{
-    gsap.to(confirmRideref.current,{
-      transform:'translateY(100%)'
-    })
-  }
-},[confirmRide])
- 
-  
   return (
     <div className="h-screen w-screen overflow-hidden">
       <img
@@ -114,9 +125,19 @@ useGSAP(()=>{
           <h2 className="text-lg font-semibold">₹293.30</h2>
         </div>
       </div>
-      <div ref={confirmRideref} className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12">
-        <ConfirmRidePanel />
+      <div
+        ref={confirmRideref}
+        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12"
+      >
+        <ConfirmRidePanel
+          setLookingForDriver={setLookingForDriver}
+          setConfirmRide={setConfirmRide}
+        />
       </div>
+      <div ref={lookingForDriverref} className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12">
+        <LookingForDriver setLookingForDriver={setLookingForDriver} />
+      </div>
+      
     </div>
   );
 };
