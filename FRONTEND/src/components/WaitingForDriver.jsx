@@ -1,8 +1,17 @@
 import React from "react";
 
-const WaitingForDriver = () => {
+const WaitingForDriver = (props) => {
   return (
     <div>
+      <h5 className="text-xl text-center">
+        <i
+          onClick={() => {
+            props.setOpen(prev => !prev);
+            
+          }}
+          class="ri-arrow-down-wide-line"
+        ></i>
+      </h5>
       <div className=" flex justify-between  border-b-2 p-3">
         <h3 className="text-xl font-semibold  text-center mb-3">
           Meet at the Pickup Point
