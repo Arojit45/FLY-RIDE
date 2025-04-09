@@ -37,7 +37,7 @@ const BookingPage = (props) => {
     <div className="h-screen w-screen overflow-hidden">
       <img
         className="h-full w-full object-cover  "
-        src="https://www.shutterstock.com/image-vector/city-map-dhaka-coxs-bazar-260nw-2277305657.jpg"
+        src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif"
       />
       <div className="fixed w-full   z-10 bottom-0   flex flex-col  bg-white px-3 py-10 pt-14">
         <h5 className="p-1 m-1 w-[93%] absolute top-0  text-center ">
@@ -134,10 +134,12 @@ const BookingPage = (props) => {
           setConfirmRide={setConfirmRide}
         />
       </div>
-      <div ref={lookingForDriverref} className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12">
+      <div
+        ref={lookingForDriverref}
+        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12"
+      >
         <LookingForDriver setLookingForDriver={setLookingForDriver} />
       </div>
-      
     </div>
   );
 };

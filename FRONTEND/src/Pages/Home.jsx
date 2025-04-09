@@ -42,13 +42,17 @@ const Home = () => {
       <div className="h-screen w-screen ">
         <img
           className="h-full w-full object-cover"
-          src="https://www.shutterstock.com/image-vector/city-map-dhaka-coxs-bazar-260nw-2277305657.jpg"
+          src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif"
         />
         <div className=" flex flex-col justify-end h-screen absolute top-0 w-full ">
           <div className="h-[30%] p-5 bg-white relative">
-            <h5 ref={panelcloseref} onClick={()=>{
-              setPanelopen(false)
-            }} className=" absolute opacity-0 top-6 text-2xl right-6">
+            <h5
+              ref={panelcloseref}
+              onClick={() => {
+                setPanelopen(false);
+              }}
+              className=" absolute opacity-0 top-6 text-2xl right-6"
+            >
               <i className="ri-arrow-down-wide-line"></i>
             </h5>
             <h4 className="text-2xl font-semibold">Find a trip</h4>

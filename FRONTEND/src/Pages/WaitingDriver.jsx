@@ -27,9 +27,12 @@ const WaitingDriver = () => {
     <div className="h-screen w-screen overflow-hidden">
       <img
         className="h-full w-full object-cover  "
-        src="https://www.shutterstock.com/image-vector/city-map-dhaka-coxs-bazar-260nw-2277305657.jpg"
+        src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif"
       />
-      <div ref={openref} className="fixed w-full z-10 bottom-0  bg-white px-2 py-4 pt-6">
+      <div
+        ref={openref}
+        className="fixed w-full z-10 bottom-0  bg-white px-2 py-4 pt-6"
+      >
         <WaitingForDriver setOpen={setOpen} />
       </div>
     </div>
