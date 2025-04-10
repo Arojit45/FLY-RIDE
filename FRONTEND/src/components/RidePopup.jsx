@@ -1,6 +1,8 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const RidePopup = (props) => {
+    
   return (
     <div className="p-1 flex flex-col  ">
       <h5 className="p-1 text-center w-[93%] ">
@@ -53,9 +55,9 @@ const RidePopup = (props) => {
             Ignore
           </button>
         </div>
-        <div className="bg-black flex items-center justify-center text-white rounded-xl h-10 w-20">
+        <Link to={'/Ridedetail'} className="bg-black flex items-center justify-center text-white rounded-xl h-10 w-20">
           <button>Accept</button>
-        </div>
+        </Link>
       </div>
     </div>
   );

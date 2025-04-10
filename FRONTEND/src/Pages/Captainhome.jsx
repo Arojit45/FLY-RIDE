@@ -1,9 +1,10 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import CaptainDetails from "../components/CaptainDetails";
 import RidePopup from "../components/RidePopup";
 import {useGSAP} from '@gsap/react'
 import gsap from "gsap";
+
 
 const Captainhome = () => {
   
@@ -45,8 +46,11 @@ const Captainhome = () => {
       <div className=" ">
         <CaptainDetails />
       </div>
-      <div ref={ridepopupref}   className="fixed rounded-t-lg w-full translate-y-full z-10 bottom-0  bg-white px-3 py-3 ">
-        <RidePopup setRidepopup={setRidepopup}/>
+      <div
+        ref={ridepopupref}
+        className="fixed rounded-t-lg w-full translate-y-full z-10 bottom-0  bg-white px-3 py-3 "
+      >
+        <RidePopup setRidepopup={setRidepopup} />
       </div>
     </div>
   );

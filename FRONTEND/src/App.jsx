@@ -13,6 +13,8 @@ import CaptainProtectedWrapper from "./Pages/CaptainProtectedWrapper";
 import BookingPage from "./Pages/BookingPage";
 import WaitingDriver from "./Pages/WaitingDriver";
 import Riding from "./Pages/Riding";
+import RideDetails from "./Pages/RideDetails";
+import CaptainRiding from "./Pages/CaptainRiding";
 
 
 const App = () => {
@@ -43,6 +45,8 @@ const App = () => {
         <Route path="/BookingPage" element={<BookingPage/>}/>
         <Route path="/WaitingDriver" element={<WaitingDriver/>}/>
         <Route path="/ride" element={<Riding/>}/>
+        <Route path="/Ridedetail" element={<RideDetails/>}/>
+        <Route path="/CaptainRiding"element={<CaptainRiding/>}/>
         <Route
           path="/Captainhome"
           element={
