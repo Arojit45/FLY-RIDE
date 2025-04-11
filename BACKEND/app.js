@@ -8,6 +8,7 @@ const userRoutes = require('./Routes/User.routes');
 const captainRoutes = require('./Routes/Captain.routes');
 const port = process.env.PORT || 3000;
 const cookieParser = require('cookie-parser');
+const mapsRoutes = require('./Routes/maps.routes')
 connectDB();
 
 app.use(cors());
@@ -20,6 +21,8 @@ app.get('/', (req, res) => {
     res.send('Hello World');
 });
 app.use('/users', userRoutes);
+
+app.use('/maps',mapsRoutes)
 
 app.use('/captains', captainRoutes);
 
