@@ -8,7 +8,7 @@ module.exports.getAddressCoordinates = async (address) => {
   try {
     const response = await axios.get(url, {
       headers: {
-        "User-Agent": "YourAppName/1.0 (your@email.com)", 
+        "User-Agent": "YourAppName/1.0 (your@email.com)",
       },
     });
 
@@ -17,10 +17,10 @@ module.exports.getAddressCoordinates = async (address) => {
       throw new Error("No results found for the given address");
     }
 
-    const location = response.data[0]; 
+    const location = response.data[0];
     return {
-      lat: location.lat,
-      lng: location.lon,
+      lat: parseFloat(location.lat), // Convert lat to number
+      lon: parseFloat(location.lon),
     };
   } catch (error) {
     console.error("Axios/Server error:", error.message);
@@ -32,13 +32,14 @@ module.exports.getDistanceTime = async (origin, destination) => {
   if (!origin || !destination) {
     throw new Error("origin and destination are required");
   }
-  const [originLat, originLng] = origin.split(",");
-  const [destLat, destLng] = destination.split(",");
+
+  const [originLng, originLat] = origin.split(",");
+  const [destLng, destLat] = destination.split(",");
 
   const url = `http://router.project-osrm.org/route/v1/driving/${originLng},${originLat};${destLng},${destLat}?overview=false`;
   try {
     const response = await axios.get(url);
-    
+
     if (response.data.code === "Ok") {
       const route = response.data.routes[0];
 
@@ -47,6 +48,7 @@ module.exports.getDistanceTime = async (origin, destination) => {
         duration_min: (route.duration / 60).toFixed(2),
       };
     } else {
+      console.error("OSRM response error:", response.data);
       throw new Error("Unable to fetch Distance and Time");
     }
   } catch (err) {
@@ -55,31 +57,59 @@ module.exports.getDistanceTime = async (origin, destination) => {
   }
 };
 
-module.exports.getAuthCompleteSuggestions= async (input) => {
-  if(!input){
-    throw new Error('query is required')
+module.exports.getAuthCompleteSuggestions = async (input) => {
+  if (!input) {
+    throw new Error("query is required");
   }
- const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(input)}&addressdetails=1&limit=5`;
+  const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+    input
+  )}&addressdetails=1&limit=5`;
 
- try {
-   const response = await axios.get(url, {
-     headers: {
-       "User-Agent": "YourAppName/1.0 (your@email.com)",
-     },
-   });
-   if (response.data && response.data.length > 0) {
-     return response.data.map((result) => ({
-       label: result.display_name,
-       lat: result.lat,
-       lon: result.lon,
-       place_id: result.place_id,
-     }));
-   } else {
-     throw new Error("No suggestions found");
-   }
- } catch (err) {
-   console.error(err);
-   throw err;
- }
-}
+  try {
+    const response = await axios.get(url, {
+      headers: {
+        "User-Agent": "YourAppName/1.0 (your@email.com)",
+      },
+    });
+    if (response.data && response.data.length > 0) {
+      return response.data.map((result) => ({
+        label: result.display_name,
+        lat: result.lat,
+        lon: result.lon,
+        place_id: result.place_id,
+      }));
+    } else {
+      throw new Error("No suggestions found");
+    }
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
 
+module.exports.getRouteDetails = async (
+  originLat,
+  originLng,
+  destLat,
+  destLng
+) => {
+  const url = `http://router.project-osrm.org/route/v1/driving/${originLng},${originLat};${destLng},${destLat}?overview=false`;
+
+  try {
+    const response = await axios.get(url);
+
+    if (response.data.code === "Ok") {
+      const route = response.data.routes[0];
+
+      return {
+        distance: (route.distance / 1000).toFixed(2), // Distance in kilometers
+        duration: (route.duration / 60).toFixed(2), // Duration in minutes
+      };
+    } else {
+      throw new Error("Unable to fetch route details");
+    }
+  } catch (error) {
+    console.error("Error fetching route details:", error.message);
+    throw error;
+  }
+};
