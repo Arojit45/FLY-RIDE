@@ -1,4 +1,4 @@
-// osrmService.js
+
 const axios = require("axios");
 
 const getRouteDetails = async (origin, destination) => {
@@ -23,7 +23,7 @@ const getRouteDetails = async (origin, destination) => {
   }
 };
 
-// Export the function properly
+
 module.exports = {
   getRouteDetails,
 };
