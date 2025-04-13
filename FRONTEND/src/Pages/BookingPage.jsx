@@ -10,6 +10,8 @@ const BookingPage = (props) => {
   const {fares,pickuplocation,destinationlocation}=useContext(UserDataContext)
   const [confirmRide, setConfirmRide] = useState(false);
   const [lookingForDriver, setLookingForDriver] = useState(false);
+  const [vehicleType, setVehicleType] = useState(null);
+  const [selectedFare, setSelectedFare] = useState(null); 
   const confirmRideref = useRef(null);
   const lookingForDriverref = useRef(null);
 
@@ -55,8 +57,11 @@ const BookingPage = (props) => {
     } catch (error) {
       console.error("Error creating ride:", error);
     }
+    // Update the selected fare
+      setSelectedFare(response.data.fare);
   }
 
+  
   return (
     <div className="h-screen w-screen overflow-hidden">
       <img
@@ -76,7 +81,7 @@ const BookingPage = (props) => {
         <div
           onClick={() => {
             setConfirmRide(true);
-            createRide('car');
+            createRide("car");
           }}
           className="flex w-full items-center active:border-black border-2 mb-2 rounded-xl justify-between  p-3"
         >
@@ -102,7 +107,7 @@ const BookingPage = (props) => {
         <div
           onClick={() => {
             setConfirmRide(true);
-            createRide('bike')
+            createRide("bike");
           }}
           className="flex w-full items-center active:border-black border-2 mb-2 rounded-xl justify-between  p-3"
         >
@@ -128,7 +133,7 @@ const BookingPage = (props) => {
         <div
           onClick={() => {
             setConfirmRide(true);
-            createRide('auto');
+            createRide("auto");
           }}
           className="flex w-full items-center active:border-black border-2 mb-2 rounded-xl justify-between  p-3"
         >
@@ -159,12 +164,16 @@ const BookingPage = (props) => {
         <ConfirmRidePanel
           setLookingForDriver={setLookingForDriver}
           setConfirmRide={setConfirmRide}
+          pickup={pickuplocation}
+          destination={destinationlocation}
+          fare={selectedFare}
           createRide={createRide}
         />
       </div>
       <div
         ref={lookingForDriverref}
-        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12">
+        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12"
+      >
         <LookingForDriver setLookingForDriver={setLookingForDriver} />
       </div>
     </div>
