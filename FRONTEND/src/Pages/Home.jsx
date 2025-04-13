@@ -1,13 +1,15 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import "remixicon/fonts/remixicon.css";
 import LocationSearchPanel from "../components/LocationSearchPanel";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { UserDataContext } from "../context/Usercontext";
 
 
 const Home = () => {
+  const {setFares} = useContext(UserDataContext)
   const navigation = useNavigate()
   const [pickup, setPickup] = useState("");
   const [destination, setDestination] = useState("");
@@ -17,7 +19,6 @@ const Home = () => {
   const [pickupSuggestion, setPickupSuggestion] = useState([]);
   const [destinationSuggestion, setDestinationSuggestion] = useState([]);
   const [activeField, setActiveField] = useState(null);
-  const [fare, setFare] = useState({})
 
 
   const hadlePickupChange = async (e) => {
@@ -89,13 +90,27 @@ const Home = () => {
     else{
       alert('All fields are required')
     }
-    const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/rides/get-fare`,{
-      params:{pickup,destination},
-      headers:{
-        Authorization:`Bearer ${localStorage.getItem('token')}`
-      }
-    })
+    try {
+    setPanelopen(false);
+
+    const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/rides/get-fare`, {
+      params: { pickup, destination },
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
     console.log(response.data)
+    setFares({
+      car: response.data.car,
+      bike: response.data.bike,
+      auto: response.data.auto,
+    });
+    navigation("/BookingPage");
+  } catch (error) {
+    console.error("Error fetching fares:", error);
+    alert("Something went wrong while fetching fares.");
+  }  
+    
   }
   return (
     <div className="h-screen w-screen relative overflow-hidden">

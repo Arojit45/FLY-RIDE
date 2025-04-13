@@ -1,10 +1,12 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import ConfirmRidePanel from "../components/ConfirmRidePanel";
 import LookingForDriver from "../components/LookingForDriver";
+import  { UserDataContext } from "../context/Usercontext";
 
 const BookingPage = (props) => {
+  const {fares}=useContext(UserDataContext)
   const [confirmRide, setConfirmRide] = useState(false);
   const [lookingForDriver, setLookingForDriver] = useState(false);
   const confirmRideref = useRef(null);
@@ -72,7 +74,7 @@ const BookingPage = (props) => {
               Affortable, compact rides
             </p>
           </div>
-          <h2 className="text-lg font-semibold">₹193.30</h2>
+          <h2 className="text-lg font-semibold">₹{fares?.car}</h2>
         </div>
         <div
           onClick={() => {
@@ -97,7 +99,7 @@ const BookingPage = (props) => {
               Affortable,Motorcycle rides
             </p>
           </div>
-          <h2 className="text-lg font-semibold">₹103.30</h2>
+          <h2 className="text-lg font-semibold">₹{fares?.bike}</h2>
         </div>
         <div
           onClick={() => {
@@ -122,7 +124,7 @@ const BookingPage = (props) => {
               Affortable, auto rides
             </p>
           </div>
-          <h2 className="text-lg font-semibold">₹293.30</h2>
+          <h2 className="text-lg font-semibold">₹{fares?.auto}</h2>
         </div>
       </div>
       <div

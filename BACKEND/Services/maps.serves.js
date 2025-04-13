@@ -4,29 +4,26 @@ module.exports.getAddressCoordinates = async (address) => {
   const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
     address
   )}`;
-
   try {
     const response = await axios.get(url, {
       headers: {
         "User-Agent": "YourAppName/1.0 (your@email.com)",
       },
     });
-
     if (response.data.length === 0) {
-      console.error("No results found for the given address");
       throw new Error("No results found for the given address");
     }
 
     const location = response.data[0];
     return {
-      lat: parseFloat(location.lat), // Convert lat to number
+      lat: parseFloat(location.lat),
       lon: parseFloat(location.lon),
     };
   } catch (error) {
     console.error("Axios/Server error:", error.message);
     throw error;
   }
-};
+}
 
 module.exports.getDistanceTime = async (origin, destination) => {
   if (!origin || !destination) {

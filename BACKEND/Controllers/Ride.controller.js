@@ -47,7 +47,7 @@ module.exports.getFareForAllVehicles = async (req, res) => {
     
     try {
         const result = await rideService.getFareForAllVehicles(pickup, destination);
-        return res.status(200).json(result);
+        return res.status(200).json(result.fares);
     } catch (error) {
         console.error('Error calculating fare:', error);
         return res.status(500).json({ 

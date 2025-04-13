@@ -1,6 +1,6 @@
 const riderModal = require("../Models/ride.model");
 const mapsService = require("../Services/maps.serves");
-const crypto = require('crypto')
+const crypto = require("crypto");
 
 async function getFare(pickup, destination, vehicleType) {
   if (!pickup || !destination || !vehicleType) {
@@ -10,11 +10,17 @@ async function getFare(pickup, destination, vehicleType) {
   // Get distance and duration
   const pickupStr = `${pickup.coordinates.lon},${pickup.coordinates.lat}`;
   const destinationStr = `${destination.coordinates.lon},${destination.coordinates.lat}`;
-  
-  const distanceTime = await mapsService.getDistanceTime(pickupStr, destinationStr);
 
+  const distanceTime = await mapsService.getDistanceTime(
+    pickupStr,
+    destinationStr
+  );
 
-  if (!distanceTime || !distanceTime.distance_km || !distanceTime.duration_min) {
+  if (
+    !distanceTime ||
+    !distanceTime.distance_km ||
+    !distanceTime.duration_min
+  ) {
     throw new Error("Could not fetch distance and duration");
   }
 
@@ -39,10 +45,10 @@ async function getFare(pickup, destination, vehicleType) {
 
   const durationInMinutes = parseFloat(distanceTime.duration_min);
 
-
-  const fare = baseFare[vehicleType] + 
-               ((distanceInKm/1000) * perKmRate[vehicleType]) + 
-               ((durationInMinutes/60) * perMinuteRate[vehicleType]);
+  const fare =
+    baseFare[vehicleType] +
+    (distanceInKm / 1000) * perKmRate[vehicleType] +
+    (durationInMinutes / 60) * perMinuteRate[vehicleType];
 
   return {
     fare: Math.round(fare),
@@ -52,23 +58,18 @@ async function getFare(pickup, destination, vehicleType) {
 }
 
 async function getFareForAllVehicles(pickup, destination) {
-  // First convert addresses to coordinates
   const pickupCoords = await mapsService.getAddressCoordinates(pickup);
   const destinationCoords = await mapsService.getAddressCoordinates(
     destination
   );
 
-  // Convert coordinates to string format
   const pickupStr = `${pickupCoords.lon},${pickupCoords.lat}`;
   const destinationStr = `${destinationCoords.lon},${destinationCoords.lat}`;
 
-  // Get distance and duration
   const distanceTime = await mapsService.getDistanceTime(
     pickupStr,
     destinationStr
   );
-
-  // Fare calculation constants
   const baseFare = {
     auto: 30,
     car: 50,
@@ -88,20 +89,18 @@ async function getFareForAllVehicles(pickup, destination) {
   const distanceInKm = parseFloat(distanceTime.distance_km);
   const durationInMinutes = parseFloat(distanceTime.duration_min);
 
-  // Calculate fare for each vehicle type
   const fares = {
-    auto:
-      baseFare.auto +
-      distanceInKm * perKmRate.auto +
-      durationInMinutes * perMinuteRate.auto,
+    auto:Math.round(baseFare.auto +
+      (distanceInKm) * perKmRate.auto +
+      (durationInMinutes) * perMinuteRate.auto),
     car:
-      baseFare.car +
+      Math.round(baseFare.car +
       distanceInKm * perKmRate.car +
-      durationInMinutes * perMinuteRate.car,
+      durationInMinutes * perMinuteRate.car),
     bike:
-      baseFare.bike +
+      Math.round(baseFare.bike +
       distanceInKm * perKmRate.bike +
-      durationInMinutes * perMinuteRate.bike,
+      durationInMinutes * perMinuteRate.bike),
   };
 
   return {
@@ -110,16 +109,16 @@ async function getFareForAllVehicles(pickup, destination) {
     duration: durationInMinutes,
   };
 }
-module.exports.getFareForAllVehicles = getFareForAllVehicles
+module.exports.getFareForAllVehicles = getFareForAllVehicles;
 
-
-
-function getOtp(num){
-  function generateOtp(num){
-    const otp = crypto.randomInt(Math.pow(10,num-1),Math.pow(10,num)).toString();
+function getOtp(num) {
+  function generateOtp(num) {
+    const otp = crypto
+      .randomInt(Math.pow(10, num - 1), Math.pow(10, num))
+      .toString();
     return otp;
   }
-  return generateOtp(num)
+  return generateOtp(num);
 }
 
 module.exports.createRide = async ({
@@ -133,14 +132,18 @@ module.exports.createRide = async ({
   }
 
   // Get fare, distance and duration
-  const { fare, distance, duration } = await getFare(pickup, destination, vehicleType);
+  const { fare, distance, duration } = await getFare(
+    pickup,
+    destination,
+    vehicleType
+  );
 
   // Create the ride
   const ride = await riderModal.create({
     user,
     pickup,
     destination,
-    otp:getOtp(6),
+    otp: getOtp(6),
     fare,
     distance,
     duration,
