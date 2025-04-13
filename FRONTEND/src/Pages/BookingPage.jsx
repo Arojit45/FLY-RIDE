@@ -1,12 +1,13 @@
 import React, { useContext, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import axios from "axios"
 import ConfirmRidePanel from "../components/ConfirmRidePanel";
 import LookingForDriver from "../components/LookingForDriver";
 import  { UserDataContext } from "../context/Usercontext";
 
 const BookingPage = (props) => {
-  const {fares}=useContext(UserDataContext)
+  const {fares,pickuplocation,destinationlocation}=useContext(UserDataContext)
   const [confirmRide, setConfirmRide] = useState(false);
   const [lookingForDriver, setLookingForDriver] = useState(false);
   const confirmRideref = useRef(null);
@@ -35,6 +36,27 @@ const BookingPage = (props) => {
     }
   }, [lookingForDriver]);
 
+  async function createRide(vehicleType) {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/rides/create`,
+        {
+          pickup: pickuplocation,
+          destination: destinationlocation,
+          vehicleType: vehicleType.toLowerCase(),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      console.log("Ride Created:", response.data);
+    } catch (error) {
+      console.error("Error creating ride:", error);
+    }
+  }
+
   return (
     <div className="h-screen w-screen overflow-hidden">
       <img
@@ -54,6 +76,7 @@ const BookingPage = (props) => {
         <div
           onClick={() => {
             setConfirmRide(true);
+            createRide('car');
           }}
           className="flex w-full items-center active:border-black border-2 mb-2 rounded-xl justify-between  p-3"
         >
@@ -79,6 +102,7 @@ const BookingPage = (props) => {
         <div
           onClick={() => {
             setConfirmRide(true);
+            createRide('bike')
           }}
           className="flex w-full items-center active:border-black border-2 mb-2 rounded-xl justify-between  p-3"
         >
@@ -104,6 +128,7 @@ const BookingPage = (props) => {
         <div
           onClick={() => {
             setConfirmRide(true);
+            createRide('auto');
           }}
           className="flex w-full items-center active:border-black border-2 mb-2 rounded-xl justify-between  p-3"
         >
@@ -134,12 +159,12 @@ const BookingPage = (props) => {
         <ConfirmRidePanel
           setLookingForDriver={setLookingForDriver}
           setConfirmRide={setConfirmRide}
+          createRide={createRide}
         />
       </div>
       <div
         ref={lookingForDriverref}
-        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12"
-      >
+        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12">
         <LookingForDriver setLookingForDriver={setLookingForDriver} />
       </div>
     </div>

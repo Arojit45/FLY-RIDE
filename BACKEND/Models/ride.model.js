@@ -12,12 +12,18 @@ const rideSchema = new mongoose.Schema({
     ref: "captain",
   },
   pickup: {
-    type: String,
-    required: true,
+    name: { type: String, required: true },
+    coordinates: {
+      lat: { type: Number, required: true },
+      lon: { type: Number, required: true },
+    },
   },
   destination: {
-    type: String,
-    required: true,
+    name: { type: String, required: true },
+    coordinates: {
+      lat: { type: Number, required: true },
+      lon: { type: Number, required: true },
+    },
   },
   fare: {
     type: Number,

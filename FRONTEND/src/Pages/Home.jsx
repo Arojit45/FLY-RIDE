@@ -9,7 +9,7 @@ import { UserDataContext } from "../context/Usercontext";
 
 
 const Home = () => {
-  const {setFares} = useContext(UserDataContext)
+  const { setFares, setPickuplocation, setDestinationlocation } = useContext(UserDataContext);
   const navigation = useNavigate()
   const [pickup, setPickup] = useState("");
   const [destination, setDestination] = useState("");
@@ -34,6 +34,7 @@ const Home = () => {
         }
       );
       setPickupSuggestion(response.data);
+      console.log(response.data)
     } catch (error) {
       console.log(error);
     }
@@ -81,6 +82,11 @@ const Home = () => {
       });
     }
   }, [panelopen]);
+ 
+
+//send to context API
+  setPickuplocation(pickup)
+  setDestinationlocation(destination)
   
   async function  FindTrip (){
     if(pickup && destination){
@@ -112,6 +118,8 @@ const Home = () => {
   }  
     
   }
+
+  
   return (
     <div className="h-screen w-screen relative overflow-hidden">
       <img

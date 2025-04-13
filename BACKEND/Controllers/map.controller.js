@@ -38,7 +38,6 @@ module.exports.getAuthCompleteSuggestions=async(req,res,next)=>{
             return res.status(400).json({error:error.array()})
         }
         const {input}=req.query;
-        console.log("Input received:", input);
         const suggestions = await mapsService.getAuthCompleteSuggestions(input)
         res.status(200).json(suggestions)
     } catch (error) {

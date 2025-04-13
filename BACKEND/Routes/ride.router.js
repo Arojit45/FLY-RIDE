@@ -17,7 +17,7 @@ router.post("/create",authMiddleware.authUser,
       .withMessage("Invalid destination address"),
     body("vehicleType")
       .isString()
-      .isIn(["auto", "car", "motorcycle"])
+      .isIn(["auto", "car", "bike"])
       .withMessage("Invalid vehicle type"),
   ],
   rideController.createRide
