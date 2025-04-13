@@ -51,6 +51,69 @@ async function getFare(pickup, destination, vehicleType) {
   };
 }
 
+async function getFareForAllVehicles(pickup, destination) {
+  // First convert addresses to coordinates
+  const pickupCoords = await mapsService.getAddressCoordinates(pickup);
+  const destinationCoords = await mapsService.getAddressCoordinates(
+    destination
+  );
+
+  // Convert coordinates to string format
+  const pickupStr = `${pickupCoords.lon},${pickupCoords.lat}`;
+  const destinationStr = `${destinationCoords.lon},${destinationCoords.lat}`;
+
+  // Get distance and duration
+  const distanceTime = await mapsService.getDistanceTime(
+    pickupStr,
+    destinationStr
+  );
+
+  // Fare calculation constants
+  const baseFare = {
+    auto: 30,
+    car: 50,
+    bike: 20,
+  };
+  const perKmRate = {
+    auto: 10,
+    car: 15,
+    bike: 8,
+  };
+  const perMinuteRate = {
+    auto: 2,
+    car: 3,
+    bike: 1.5,
+  };
+
+  const distanceInKm = parseFloat(distanceTime.distance_km);
+  const durationInMinutes = parseFloat(distanceTime.duration_min);
+
+  // Calculate fare for each vehicle type
+  const fares = {
+    auto:
+      baseFare.auto +
+      distanceInKm * perKmRate.auto +
+      durationInMinutes * perMinuteRate.auto,
+    car:
+      baseFare.car +
+      distanceInKm * perKmRate.car +
+      durationInMinutes * perMinuteRate.car,
+    bike:
+      baseFare.bike +
+      distanceInKm * perKmRate.bike +
+      durationInMinutes * perMinuteRate.bike,
+  };
+
+  return {
+    fares,
+    distance: distanceInKm,
+    duration: durationInMinutes,
+  };
+}
+module.exports.getFareForAllVehicles = getFareForAllVehicles
+
+
+
 function getOtp(num){
   function generateOtp(num){
     const otp = crypto.randomInt(Math.pow(10,num-1),Math.pow(10,num)).toString();

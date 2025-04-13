@@ -36,3 +36,23 @@ module.exports.createRide = async (req, res) => {
     return res.status(400).json({ message: error.message });
   }
 };
+
+module.exports.getFareForAllVehicles = async (req, res) => {
+    const error = validationResult(req);
+    if (!error.isEmpty()) {
+        return res.status(400).json({ error: error.array() });
+    }
+    
+    const { pickup, destination } = req.query;
+    
+    try {
+        const result = await rideService.getFareForAllVehicles(pickup, destination);
+        return res.status(200).json(result);
+    } catch (error) {
+        console.error('Error calculating fare:', error);
+        return res.status(500).json({ 
+            message: 'Error calculating fare',
+            error: error.message 
+        });
+    }
+};
