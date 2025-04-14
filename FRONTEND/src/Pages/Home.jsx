@@ -105,7 +105,6 @@ const Home = () => {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
-    console.log(response.data)
     setFares({
       car: response.data.car,
       bike: response.data.bike,

@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import {CaptainDataContext} from '../context/Captaincontext'
 
 const CaptainDetails = () => {
+  const { captain } = useContext(CaptainDataContext);
+  
   return (
     <div>
       <div className="absolute w-full bottom-0 p-6 bg-white">
@@ -12,7 +15,9 @@ const CaptainDetails = () => {
                 src="https://cdn-01.cms-ap-v2i.applyflow.com/pinnacle-people/wp-content/uploads/2023/09/slide-2.png"
               />
             </div>
-            <h4 className="text-lg font-medium">Arojit Paul</h4>
+            <h4 className="text-lg capitalize font-medium">
+              {captain.fullname.firstname +" "+captain.fullname.lastname}
+            </h4>
           </div>
           <div>
             <h4 className="text-xl font-semibold">₹103.30</h4>

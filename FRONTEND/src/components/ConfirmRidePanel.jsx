@@ -1,6 +1,7 @@
 import React from 'react'
 
 const ConfirmRidePanel = (props) => {
+ 
   return (
     <div>
       <h5 className="p-1 text-center w-[93%] absolute top-0">
@@ -30,7 +31,9 @@ const ConfirmRidePanel = (props) => {
           <div className="flex items-center gap-4 p-3 ">
             <i className="text-lg ri-currency-line"></i>
             <div>
-              <h3 className="text-lg font-medium">₹{props.fare}</h3>
+              <h3 className="text-lg font-medium">
+                ₹{props.fare}
+              </h3>
               <p className="text-sm -mt-1 text-gray-600">Cash</p>
             </div>
           </div>

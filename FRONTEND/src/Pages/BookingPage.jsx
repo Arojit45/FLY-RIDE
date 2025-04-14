@@ -53,12 +53,10 @@ const BookingPage = (props) => {
           },
         }
       );
-      console.log("Ride Created:", response.data);
     } catch (error) {
       console.error("Error creating ride:", error);
     }
-    // Update the selected fare
-      setSelectedFare(response.data.fare);
+    
   }
 
   
@@ -82,6 +80,7 @@ const BookingPage = (props) => {
           onClick={() => {
             setConfirmRide(true);
             createRide("car");
+            setVehicleType("car");
           }}
           className="flex w-full items-center active:border-black border-2 mb-2 rounded-xl justify-between  p-3"
         >
@@ -108,6 +107,7 @@ const BookingPage = (props) => {
           onClick={() => {
             setConfirmRide(true);
             createRide("bike");
+            setVehicleType("bike");
           }}
           className="flex w-full items-center active:border-black border-2 mb-2 rounded-xl justify-between  p-3"
         >
@@ -134,6 +134,7 @@ const BookingPage = (props) => {
           onClick={() => {
             setConfirmRide(true);
             createRide("auto");
+            setVehicleType("auto");
           }}
           className="flex w-full items-center active:border-black border-2 mb-2 rounded-xl justify-between  p-3"
         >
@@ -166,7 +167,8 @@ const BookingPage = (props) => {
           setConfirmRide={setConfirmRide}
           pickup={pickuplocation}
           destination={destinationlocation}
-          fare={selectedFare}
+          fare={fares?.[vehicleType]}
+          vehicleType={vehicleType}
           createRide={createRide}
         />
       </div>
@@ -174,7 +176,15 @@ const BookingPage = (props) => {
         ref={lookingForDriverref}
         className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12"
       >
-        <LookingForDriver setLookingForDriver={setLookingForDriver} />
+        <LookingForDriver
+          setLookingForDriver={setLookingForDriver}
+          setConfirmRide={setConfirmRide}
+          pickup={pickuplocation}
+          destination={destinationlocation}
+          fare={fares?.[vehicleType]}
+          vehicleType={vehicleType}
+          createRide={createRide}
+        />
       </div>
     </div>
   );
