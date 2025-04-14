@@ -1,13 +1,16 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import axios from "axios"
 import ConfirmRidePanel from "../components/ConfirmRidePanel";
 import LookingForDriver from "../components/LookingForDriver";
 import  { UserDataContext } from "../context/Usercontext";
+import { Socketcontext } from "../context/Socketcontext";
 
 const BookingPage = (props) => {
-  const {fares,pickuplocation,destinationlocation}=useContext(UserDataContext)
+  const { fares, pickuplocation, destinationlocation, user, setUser } =
+    useContext(UserDataContext);
+  const {socket,sendMessage,receiveMessage} = useContext(Socketcontext)
   const [confirmRide, setConfirmRide] = useState(false);
   const [lookingForDriver, setLookingForDriver] = useState(false);
   const [vehicleType, setVehicleType] = useState(null);
@@ -58,8 +61,13 @@ const BookingPage = (props) => {
     }
     
   }
+  useEffect(() => {
+    console.log("Current user data:", user); // debug
+    if (user && user._id) {
+      socket.emit("join", { userId: user._id, userType: "user" });
+    }
+  }, [user]);
 
-  
   return (
     <div className="h-screen w-screen overflow-hidden">
       <img

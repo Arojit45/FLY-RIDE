@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { UserDataContext } from "../context/Usercontext";
 
 
+
 const Home = () => {
   const { setFares, setPickuplocation, setDestinationlocation } = useContext(UserDataContext);
   const navigation = useNavigate()
