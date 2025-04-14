@@ -1,4 +1,5 @@
 const axios = require("axios");
+const captainModel = require("../Models/captain.model");
 
 module.exports.getAddressCoordinates = async (address) => {
   const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
@@ -110,3 +111,19 @@ module.exports.getRouteDetails = async (
     throw error;
   }
 };
+
+module.exports.getCaptainsInTheRadius = async(lat,lon,radius)=>{
+   if (lat == null || lon == null || radius == null) {
+     throw new Error(
+       `Latitude, longitude, or radius is missing. Provided values - lat: ${lat}, lon: ${lon}, radius: ${radius}`
+     );
+   }
+  //radius in km
+   return await captainModel.find({
+     location: {
+       $geoWithin: {
+         $centerSphere: [[lat,lon], radius / 6371],
+       },
+     },
+   });
+}

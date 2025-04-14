@@ -1,15 +1,63 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import CaptainDetails from "../components/CaptainDetails";
 import RidePopup from "../components/RidePopup";
 import {useGSAP} from '@gsap/react'
 import gsap from "gsap";
+import { Socketcontext } from "../context/Socketcontext";
+import { CaptainDataContext } from "../context/Captaincontext";
 
 
 const Captainhome = () => {
   
+  
   const [ridepopup, setRidepopup] = useState(true);
   const ridepopupref = useRef(null)
+  const {socket} = useContext(Socketcontext)
+  const {captain} = useContext(CaptainDataContext)
+
+  useEffect(() => {
+    socket.emit("join", { userId: captain._id, userType: "captain" });
+
+    const updateLocation = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            console.log({
+              userId: captain._id,
+              location: {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+              },
+            });
+
+            socket.emit("update-location-captain", {
+              userId: captain._id,
+              location: {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+              },
+            });
+          },
+          (error) => {
+            console.error("Error getting location:", error);
+          }
+        );
+      } else {
+        console.error("Geolocation is not supported by this browser.");
+      }
+    };
+
+    const locationInterval = setInterval(updateLocation, 10000);
+    updateLocation();
+
+    return () => clearInterval(locationInterval); // Clear interval on component unmount
+  }, [socket, captain]);
+
+  socket.on('new-ride',(data)=>{
+    console.log(data)
+  })
+  
 
   useGSAP(() => {
     if (ridepopup) {

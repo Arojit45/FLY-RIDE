@@ -1,13 +1,15 @@
 const rideService = require("../Services/ride.serves");
 const mapsService = require("../Services/maps.serves");
 const { validationResult } = require("express-validator");
+const {sendMessageToSocketId} = require('../Socket');
+const { events } = require("../Models/User.model");
 
 module.exports.createRide = async (req, res) => {
   const error = validationResult(req);
   if (!error.isEmpty()) {
     return res.status(400).json({ error: error.array() });
   }
-  const { pickup, destination, vehicleType } = req.body;
+  const { userId, pickup, destination, vehicleType } = req.body;
 
   try {
     // Get coordinates for pickup and destination
@@ -15,7 +17,6 @@ module.exports.createRide = async (req, res) => {
     const destinationCoords = await mapsService.getAddressCoordinates(
       destination
     );
-
     // Create ride with coordinates
     const ride = await rideService.createRide({
       user: req.user._id,
@@ -29,8 +30,28 @@ module.exports.createRide = async (req, res) => {
       },
       vehicleType,
     });
+      res.status(201).json( ride );
+      setImmediate(async () => {
+        try {
+          const captainsInRadius = await mapsService.getCaptainsInTheRadius(
+            pickupCoords.lat,
+            pickupCoords.lon,
+            2
+          );
+          ride.otp =''
+          //send message to all captain
+          captainsInRadius.map(captain =>{
+            sendMessageToSocketId(captain.socketID,{
+              events:'new-ride',
+              data:ride
+            })
+          })
 
-    return res.status(201).json(ride);
+          // Optionally, you can notify the user or update the database with the captains
+        } catch (error) {
+          console.error("Error fetching captains in radius:", error.message);
+        }
+      });
   } catch (error) {
     console.error("Error creating ride:", error);
     return res.status(400).json({ message: error.message });
