@@ -6,8 +6,10 @@ import ConfirmRidePanel from "../components/ConfirmRidePanel";
 import LookingForDriver from "../components/LookingForDriver";
 import  { UserDataContext } from "../context/Usercontext";
 import { Socketcontext } from "../context/Socketcontext";
+import { useNavigate } from "react-router-dom";
 
 const BookingPage = (props) => {
+  const navigate = useNavigate()
   const { fares, pickuplocation, destinationlocation, user, setUser } =
     useContext(UserDataContext);
   const {socket,sendMessage,receiveMessage} = useContext(Socketcontext)
@@ -48,7 +50,7 @@ const BookingPage = (props) => {
         {
           pickup: pickuplocation,
           destination: destinationlocation,
-          vehicleType: vehicleType.toLowerCase(),
+          vehicleType: vehicleType,
         },
         {
           headers: {
@@ -67,6 +69,12 @@ const BookingPage = (props) => {
       socket.emit("join", { userId: user._id, userType: "user" });
     }
   }, [user]);
+
+  socket.on("ride-confirm", (ride) => {
+    navigate("/WaitingDriver");
+  });
+ 
+
 
   return (
     <div className="h-screen w-screen overflow-hidden">
@@ -87,7 +95,6 @@ const BookingPage = (props) => {
         <div
           onClick={() => {
             setConfirmRide(true);
-            createRide("car");
             setVehicleType("car");
           }}
           className="flex w-full items-center active:border-black border-2 mb-2 rounded-xl justify-between  p-3"
@@ -114,7 +121,6 @@ const BookingPage = (props) => {
         <div
           onClick={() => {
             setConfirmRide(true);
-            createRide("bike");
             setVehicleType("bike");
           }}
           className="flex w-full items-center active:border-black border-2 mb-2 rounded-xl justify-between  p-3"
@@ -141,7 +147,6 @@ const BookingPage = (props) => {
         <div
           onClick={() => {
             setConfirmRide(true);
-            createRide("auto");
             setVehicleType("auto");
           }}
           className="flex w-full items-center active:border-black border-2 mb-2 rounded-xl justify-between  p-3"
@@ -177,6 +182,7 @@ const BookingPage = (props) => {
           destination={destinationlocation}
           fare={fares?.[vehicleType]}
           vehicleType={vehicleType}
+          // passanger={passanger}
           createRide={createRide}
         />
       </div>

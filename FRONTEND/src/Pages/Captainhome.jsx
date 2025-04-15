@@ -2,19 +2,18 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import CaptainDetails from "../components/CaptainDetails";
 import RidePopup from "../components/RidePopup";
-import {useGSAP} from '@gsap/react'
+import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { Socketcontext } from "../context/Socketcontext";
 import { CaptainDataContext } from "../context/Captaincontext";
 
-
 const Captainhome = () => {
-  
-  
-  const [ridepopup, setRidepopup] = useState(true);
-  const ridepopupref = useRef(null)
-  const {socket} = useContext(Socketcontext)
-  const {captain} = useContext(CaptainDataContext)
+  const [ridepopup, setRidepopup] = useState(false);
+  const ridepopupref = useRef(null);
+  const { socket } = useContext(Socketcontext);
+  const { captain, confirmcaptain, setConfirmcaptain } =
+    useContext(CaptainDataContext);
+  const [ride, setRide] = useState(null);
 
   useEffect(() => {
     socket.emit("join", { userId: captain._id, userType: "captain" });
@@ -54,10 +53,15 @@ const Captainhome = () => {
     return () => clearInterval(locationInterval); // Clear interval on component unmount
   }, [socket, captain]);
 
-  socket.on('new-ride',(data)=>{
-    console.log(data)
-  })
-  
+  socket.on("new-ride", (data) => {
+    console.log(data);
+    setRide(data);
+    setRidepopup(true);
+  });
+
+  // async function confirmcaptain(){
+
+  // }
 
   useGSAP(() => {
     if (ridepopup) {
@@ -66,11 +70,11 @@ const Captainhome = () => {
       });
     } else {
       gsap.to(ridepopupref.current, {
-        transform:'translateY(100%)',
-      }); 
+        transform: "translateY(100%)",
+      });
     }
   }, [ridepopup]);
-  
+
   return (
     <div className="h-screen relative w-screen">
       <div className="fixed p-3 top-0 flex items-center justify-between w-full">
@@ -98,7 +102,7 @@ const Captainhome = () => {
         ref={ridepopupref}
         className="fixed rounded-t-lg w-full translate-y-full z-10 bottom-0  bg-white px-3 py-3 "
       >
-        <RidePopup setRidepopup={setRidepopup} />
+        <RidePopup ride={ride} setRidepopup={setRidepopup} />
       </div>
     </div>
   );

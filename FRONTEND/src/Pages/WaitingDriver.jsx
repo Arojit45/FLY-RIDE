@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import WaitingForDriver from '../components/WaitingForDriver';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
@@ -6,10 +6,8 @@ import gsap from 'gsap';
 
 const WaitingDriver = () => {
   const [open, setOpen] = useState(true)
- 
   const openref = useRef(null);
  
-  
   useGSAP(() => {
     if (open) {
       gsap.to(openref.current, {

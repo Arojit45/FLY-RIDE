@@ -42,7 +42,7 @@ const ConfirmRidePanel = (props) => {
           onClick={() => {
             props.setLookingForDriver(true);
             props.setConfirmRide(false);
-            props.createRide();
+            props.createRide(props.vehicleType);
           }}
           className="w-full  bg-green-600 text-white font-semibold p-2 rounded-lg"
         >

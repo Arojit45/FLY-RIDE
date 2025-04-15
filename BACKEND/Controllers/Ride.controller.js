@@ -1,5 +1,6 @@
 const rideService = require("../Services/ride.serves");
 const mapsService = require("../Services/maps.serves");
+const rideModal = require('../Models/ride.model')
 const { validationResult } = require("express-validator");
 const {sendMessageToSocketId} = require('../Socket');
 const { events } = require("../Models/User.model");
@@ -39,13 +40,14 @@ module.exports.createRide = async (req, res) => {
             2
           );
           ride.otp =''
+          const ridewithUser = await rideModal.findOne({_id:ride._id}).populate('user')
           //send message to all captain
           
           captainsInRadius.map(captain =>{
-            sendMessageToSocketId(captain.socketID,{
-              events:'new-ride',
-              data:ride
-            })
+            sendMessageToSocketId(captain.socketID, {
+              events: "new-ride",
+              data: ridewithUser,
+            });
           })
 
           // Optionally, you can notify the user or update the database with the captains
@@ -78,3 +80,22 @@ module.exports.getFareForAllVehicles = async (req, res) => {
         });
     }
 };
+
+module.exports.confirmRide = async (req,res)=>{
+  const error = validationResult(req);
+  if (!error.isEmpty()) {
+    return res.status(400).json({ error: error.array() });
+  }
+  const {rideId}=req.body
+  try {
+    const ride = await rideService.confirmRide(rideId,req.captain._id)
+    sendMessageToSocketId(ride.user.socketId,{
+      events:'ride-confirm',
+      date:ride
+    })
+    return res.status(200).json(ride)
+  } catch (error) {
+    return res.status(500).json({message:error.message})
+  }
+
+}

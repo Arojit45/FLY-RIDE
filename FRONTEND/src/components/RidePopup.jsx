@@ -22,7 +22,11 @@ const RidePopup = (props) => {
               src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fHww"
             />
           </div>
-          <h3 className="text-lg font-medium">Ananya pandey</h3>
+          <h3 className="text-lg font-medium">
+            {props.ride?.user.fullname.firstname +
+              " " +
+              props.ride?.user.fullname.lastname}
+          </h3>
         </div>
         <div className="flex flex-col items-center justify-end">
           <h4 className="text-lg font-medium">2.2km</h4>
@@ -34,14 +38,23 @@ const RidePopup = (props) => {
         <div>
           <h3 className="text-lg font-medium">56211-A</h3>
           <p className="text-sm -mt-1 text-gray-600">
-            Kankariya Talab, Gujrath
+            {props.ride?.pickup.name}
+          </p>
+        </div>
+      </div>
+      <div className="flex items-center gap-4 p-3 border-b-2">
+        <i className="text-lg ri-map-pin-user-line"></i>
+        <div>
+          <h3 className="text-lg font-medium">56211-A</h3>
+          <p className="text-sm -mt-1 text-gray-600">
+            {props.ride?.destination.name}
           </p>
         </div>
       </div>
       <div className="flex items-center gap-4 p-3 ">
         <i className="text-lg ri-currency-line"></i>
         <div>
-          <h3 className="text-lg font-medium">₹193.30</h3>
+          <h3 className="text-lg font-medium">₹{props.ride?.fare}</h3>
           <p className="text-sm -mt-1 text-gray-600">Cash</p>
         </div>
       </div>
@@ -55,7 +68,10 @@ const RidePopup = (props) => {
             Ignore
           </button>
         </div>
-        <Link to={'/Ridedetail'} className="bg-black flex items-center justify-center text-white rounded-xl h-10 w-20">
+        <Link
+          to={"/Ridedetail"}
+          className="bg-black flex items-center justify-center text-white rounded-xl h-10 w-20"
+        >
           <button>Accept</button>
         </Link>
       </div>
