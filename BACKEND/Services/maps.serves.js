@@ -55,34 +55,35 @@ module.exports.getDistanceTime = async (origin, destination) => {
   }
 };
 
+// In maps.serves.js
 module.exports.getAuthCompleteSuggestions = async (input) => {
-  if (!input) {
-    throw new Error("query is required");
-  }
-  const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-    input
-  )}&addressdetails=1&limit=5`;
-
-  try {
-    const response = await axios.get(url, {
-      headers: {
-        "User-Agent": "YourAppName/1.0 (your@email.com)",
-      },
-    });
-    if (response.data && response.data.length > 0) {
-      return response.data.map((result) => ({
-        label: result.display_name,
-        lat: result.lat,
-        lon: result.lon,
-        place_id: result.place_id,
-      }));
-    } else {
-      throw new Error("No suggestions found");
+    if (!input || input.length < 3) {
+        return [];  // Return empty array instead of throwing error
     }
-  } catch (err) {
-    console.error(err);
-    throw err;
-  }
+
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(input)}&addressdetails=1&limit=5`;
+    
+    try {
+        const response = await axios.get(url, {
+            headers: {
+                "User-Agent": "YourAppName/1.0 (your@email.com)"
+            }
+        });
+        
+        if (!response.data || response.data.length === 0) {
+            return [];  // Return empty array instead of throwing error
+        }
+        
+        return response.data.map(result => ({
+            label: result.display_name,
+            lat: result.lat,
+            lon: result.lon,
+            place_id: result.place_id
+        }));
+    } catch (error) {
+        console.error('Error getting suggestions:', error);
+        return [];  // Return empty array instead of throwing error
+    }
 };
 
 module.exports.getRouteDetails = async (

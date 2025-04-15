@@ -17,7 +17,7 @@ const SocketProvider = ({ children }) => {
 
   return (
     <Socketcontext.Provider value={{ socket }}>
-      {children} {/* Render children here */}
+      {children} 
     </Socketcontext.Provider>
   );
 };

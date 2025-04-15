@@ -69,6 +69,9 @@ const RidePopup = (props) => {
           </button>
         </div>
         <Link
+        onClick={()=>{
+          props.confirmRide()
+        }}
           to={"/Ridedetail"}
           className="bg-black flex items-center justify-center text-white rounded-xl h-10 w-20"
         >

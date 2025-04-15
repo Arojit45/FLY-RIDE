@@ -70,11 +70,9 @@ const BookingPage = (props) => {
     }
   }, [user]);
 
-  socket.on("ride-confirm", (ride) => {
+  socket.on("ride-confirm",ride => {
     navigate("/WaitingDriver");
   });
- 
-
 
   return (
     <div className="h-screen w-screen overflow-hidden">

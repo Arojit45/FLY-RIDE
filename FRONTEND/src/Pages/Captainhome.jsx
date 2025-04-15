@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
+import axios from 'axios'
 import { Link } from "react-router-dom";
 import CaptainDetails from "../components/CaptainDetails";
 import RidePopup from "../components/RidePopup";
@@ -59,10 +60,6 @@ const Captainhome = () => {
     setRidepopup(true);
   });
 
-  // async function confirmcaptain(){
-
-  // }
-
   useGSAP(() => {
     if (ridepopup) {
       gsap.to(ridepopupref.current, {
@@ -74,6 +71,26 @@ const Captainhome = () => {
       });
     }
   }, [ridepopup]);
+
+ async function confirmRide() {
+   try {
+     const response = await axios.post(
+       `${import.meta.env.VITE_BASE_URL}/rides/confirmride`,
+       {
+         rideId: ride._id, // Only need rideId in body
+       },
+       {
+         headers: {
+           Authorization: `Bearer ${localStorage.getItem("token")}`,
+         },
+       }
+     );
+
+     console.log("Response:", response.data);
+   } catch (error) {
+     console.error("Error:", error.response?.data || error.message);
+   }
+ }
 
   return (
     <div className="h-screen relative w-screen">
@@ -102,7 +119,9 @@ const Captainhome = () => {
         ref={ridepopupref}
         className="fixed rounded-t-lg w-full translate-y-full z-10 bottom-0  bg-white px-3 py-3 "
       >
-        <RidePopup ride={ride} setRidepopup={setRidepopup} />
+        <RidePopup ride={ride} 
+        confirmRide={confirmRide}
+         setRidepopup={setRidepopup} />
       </div>
     </div>
   );

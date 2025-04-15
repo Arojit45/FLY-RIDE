@@ -88,13 +88,18 @@ module.exports.confirmRide = async (req,res)=>{
   }
   const {rideId}=req.body
   try {
-    const ride = await rideService.confirmRide(rideId,req.captain._id)
-    sendMessageToSocketId(ride.user.socketId,{
-      events:'ride-confirm',
-      date:ride
-    })
+    const ride = await rideService.confirmRide({rideId,captain:req.captain})
+     if (ride?.user?.socketID) {
+       sendMessageToSocketId(ride.user.socketID, {
+         events: "ride-confirm",
+         data: ride,
+       });
+     } else {
+       console.warn("Cannot emit ride-confirm: ride.user.socketId is missing");
+     }
     return res.status(200).json(ride)
   } catch (error) {
+    console.log(error)
     return res.status(500).json({message:error.message})
   }
 
