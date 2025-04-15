@@ -40,6 +40,7 @@ module.exports.createRide = async (req, res) => {
           );
           ride.otp =''
           //send message to all captain
+          
           captainsInRadius.map(captain =>{
             sendMessageToSocketId(captain.socketID,{
               events:'new-ride',

@@ -27,7 +27,7 @@ const Captainhome = () => {
               userId: captain._id,
               location: {
                 lat: position.coords.latitude,
-                lng: position.coords.longitude,
+                lon: position.coords.longitude,
               },
             });
 
@@ -35,7 +35,7 @@ const Captainhome = () => {
               userId: captain._id,
               location: {
                 lat: position.coords.latitude,
-                lng: position.coords.longitude,
+                lon: position.coords.longitude,
               },
             });
           },

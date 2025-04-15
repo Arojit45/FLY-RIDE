@@ -26,18 +26,36 @@ function initializeSocket(server) {
       }
     });
 
-    socket.on('update-location-captain',async(data)=>{
-        const {userId,location}=data;
+    socket.on("update-location-captain", async (data) => {
+      const { userId, location } = data;
 
-        if(!location||!location.lat||!location.lng){
-            return socket.emit('error',{message:'Invalid location'})
+      if (!location || !location.lat || !location.lon) {
+        return socket.emit("error", { message: "Invalid location" });
+      }
+
+      try {
+        const updatedCaptain = await captainModel.findByIdAndUpdate(
+          userId,
+          {
+            location: {
+              lat: location.lat,
+              lon: location.lon,
+            },
+          },
+          { new: true }
+        );
+
+        if (!updatedCaptain) {
+          return socket.emit("error", { message: "Captain not found" });
         }
-        await captainModel.findByIdAndUpdate(userId,{location:{
-            lat:location.lat,
-            lng:location.lng
-        }})
-
-    })
+      } catch (error) {
+        console.error(
+          `Error updating location for captain ${userId}:`,
+          error.message
+        );
+        socket.emit("error", { message: "Failed to update location" });
+      }
+    });
 
 
     socket.on("disconnect", () => {
@@ -46,9 +64,9 @@ function initializeSocket(server) {
   });
 }
 
-function sendMessageToSocketId(socketId, message) {
+function sendMessageToSocketId(socketId, messageObject) {
   if (io) {
-    io.to(socketId).emit("message", message);
+    io.to(socketId).emit(messageObject.events, messageObject.data);
   } else {
     console.log("Socket.io not initialized");
   }
