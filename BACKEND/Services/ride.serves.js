@@ -168,8 +168,10 @@ module.exports.confirmRide = async ({ rideId, captain }) => {
       captain: captain._id,
     }
   );
-  const ride = await rideModel.findOne({ _id: rideId }).populate("user");
-
+  const ride = await rideModel
+    .findOne({ _id: rideId })
+    .populate("user")
+    .populate("captain");
   if (!ride) {
     throw new Error("Ride not Found");
   }

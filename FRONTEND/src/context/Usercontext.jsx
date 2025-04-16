@@ -7,6 +7,7 @@ const Usercontext = ({ children }) => {
   const [pickuplocation,setPickuplocation] = useState()
   const [destinationlocation, setDestinationlocation] = useState();
   const [user, setUser] = useState(null);
+  const [ridedata,setRidedata] = useState(null)
 
   return (
     <div>
@@ -15,11 +16,13 @@ const Usercontext = ({ children }) => {
           user,
           setUser,
           fares,
+          ridedata,
           setFares,
           setDestinationlocation,
           setPickuplocation,
           pickuplocation,
           destinationlocation,
+          setRidedata,
         }}
       >
         {children}

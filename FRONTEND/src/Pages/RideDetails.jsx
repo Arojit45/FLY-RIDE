@@ -29,14 +29,6 @@ const RideDetails = (props) => {
           </div>
           <div className="flex items-center">
             <h3 className="text-lg font-medium">Ananya pandey</h3>
-            {/* <div className="flex  justify-center gap-2">
-              <button className=" text-sm font-normal bg-black rounded-full text-white p-2">
-                Accept
-              </button>
-              <button className=" text-sm bg-gray-100 font-normal rounded-full p-2">
-                Decline
-              </button>
-            </div> */}
           </div>
         </div>
 

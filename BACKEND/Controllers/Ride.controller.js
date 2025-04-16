@@ -39,14 +39,17 @@ module.exports.createRide = async (req, res) => {
             pickupCoords.lon,
             2
           );
-          ride.otp =''
+          ride.otp =" "
+          console.log(ride.otp)
           const ridewithUser = await rideModal.findOne({_id:ride._id}).populate('user')
+           const rideForCaptains = { ...ridewithUser._doc }; 
+           delete rideForCaptains.otp; 
           //send message to all captain
           
           captainsInRadius.map(captain =>{
             sendMessageToSocketId(captain.socketID, {
               events: "new-ride",
-              data: ridewithUser,
+              data: rideForCaptains,
             });
           })
 

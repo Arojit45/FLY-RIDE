@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
+import { UserDataContext } from "../context/Usercontext";
 
 const WaitingForDriver = (props) => {
+
+  const { ridedata,setRidedata} =
+        useContext(UserDataContext);
+        console.log(ridedata.user.fullname)
   return (
     <div>
       <h5 className="text-xl text-center">
         <i
           onClick={() => {
-            props.setOpen(prev => !prev);
-            
+            props.setOpen((prev) => !prev);
           }}
           class="ri-arrow-down-wide-line"
         ></i>
@@ -30,10 +34,14 @@ const WaitingForDriver = (props) => {
             />
           </div>
           <div className="flex flex-col  items-end flex-grow px-2 py-1 rounded-md">
-            <h3 className="font-normal text-lg -mt-1">Arojit</h3>
-            <h1 className="text-semibold text-2xl">TRO10234</h1>
+            <h3 className="font-normal text-lg -mt-1 capitalize">
+              {`${ridedata.captain.fullname.firstname} ${ridedata.captain.fullname.lastname}`}
+            </h3>
+            <h1 className="text-semibold text-2xl">
+              {ridedata.captain.Vehicle.plate}
+            </h1>
             <h3 className="font-normal text-base -mt-1">
-              White Suzuki S-Presso LXI
+              {ridedata.captain.Vehicle.vehicleType}
             </h3>
             <h4 className="flex items-center text-lg gap-1">
               <i className="text-xl ri-star-s-fill text-yellow-500"></i> 4.9
@@ -73,16 +81,21 @@ const WaitingForDriver = (props) => {
             <div>
               <h3 className="text-lg font-medium">56211-A</h3>
               <p className="text-sm -mt-1 text-gray-600">
-                Kankariya Talab, Gujrath
+                {ridedata.destination.name}
               </p>
             </div>
           </div>
-
           <div className="flex items-center gap-4 p-3 ">
             <i className="text-lg ri-currency-line"></i>
             <div>
-              <h3 className="text-lg font-medium">₹193.30</h3>
+              <h3 className="text-lg font-medium">₹{ridedata.fare}</h3>
               <p className="text-sm -mt-1 text-gray-600">Cash</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-4 p-3">
+            <h3 className="text-lg font-extralight">Trip Otp</h3>
+            <div className="p-3 w-36 bg-gray-100 text-center rounded-lg text-lg  text-black">
+              <h3 className="text-lg font-medium">{ridedata.otp}</h3>
             </div>
           </div>
         </div>

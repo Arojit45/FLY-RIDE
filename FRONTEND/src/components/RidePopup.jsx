@@ -23,7 +23,7 @@ const RidePopup = (props) => {
             />
           </div>
           <h3 className="text-lg font-medium">
-            {props.ride?.user.fullname.firstname +
+            {props.ride?.user?.fullname?.firstname +
               " " +
               props.ride?.user.fullname.lastname}
           </h3>

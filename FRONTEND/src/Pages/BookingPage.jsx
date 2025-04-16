@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 const BookingPage = (props) => {
   const navigate = useNavigate()
-  const { fares, pickuplocation, destinationlocation, user, setUser } =
+  const { fares,ridedata,setRidedata, pickuplocation, destinationlocation, user, setUser } =
     useContext(UserDataContext);
   const {socket,sendMessage,receiveMessage} = useContext(Socketcontext)
   const [confirmRide, setConfirmRide] = useState(false);
@@ -70,8 +70,11 @@ const BookingPage = (props) => {
     }
   }, [user]);
 
-  socket.on("ride-confirm",ride => {
+  socket.on("ride-confirm", ride => {
     navigate("/WaitingDriver");
+    console.log(ride)
+    setRidedata(ride)
+    console.log(setRidedata)
   });
 
   return (

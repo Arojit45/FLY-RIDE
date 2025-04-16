@@ -2,9 +2,12 @@ import React, { useContext, useRef, useState } from 'react'
 import WaitingForDriver from '../components/WaitingForDriver';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
+import { UserDataContext } from "../context/Usercontext";
 
 
 const WaitingDriver = () => {
+  const { ridedata,setRidedata} =
+      useContext(UserDataContext);
   const [open, setOpen] = useState(true)
   const openref = useRef(null);
  
@@ -31,7 +34,9 @@ const WaitingDriver = () => {
         ref={openref}
         className="fixed w-full z-10 bottom-0  bg-white px-2 py-4 pt-6"
       >
-        <WaitingForDriver setOpen={setOpen} />
+        <WaitingForDriver
+        ridedata={ridedata} 
+        setOpen={setOpen} />
       </div>
     </div>
   );
