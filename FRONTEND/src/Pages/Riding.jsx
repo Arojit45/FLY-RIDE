@@ -1,13 +1,25 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UserDataContext } from "../context/Usercontext";
 import { CaptainDataContext } from "../context/Captaincontext";
+import { Socketcontext } from "../context/Socketcontext";
 
 
 const Riding = () => {
+  const navigate = useNavigate()
+  const {socket} = useContext(Socketcontext)
   const { confirmcaptain, setConfirmcaptain } = useContext(CaptainDataContext);
   const { ridestart } = useContext(UserDataContext);
   console.log("Ridestart in Riding:", ridestart);
+
+ socket.on('ride-complete',ride=>{
+  console.log(ride)
+  navigate("/Home");
+
+ })
+
+
+
   return (
     <div className="h-screen w-screen">
       <Link

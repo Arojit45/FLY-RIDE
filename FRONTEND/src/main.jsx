@@ -6,6 +6,8 @@ import { BrowserRouter } from "react-router-dom";
 import Usercontext from "./context/Usercontext.jsx";
 import CaptainContext from "./context/Captaincontext.jsx";
 import SocketProvider from "./context/Socketcontext.jsx";
+import "leaflet/dist/leaflet.css";
+
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

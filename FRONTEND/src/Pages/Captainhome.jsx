@@ -7,6 +7,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { Socketcontext } from "../context/Socketcontext";
 import { CaptainDataContext } from "../context/Captaincontext";
+import LiveTracking from "./LiveTracking";
 
 const Captainhome = () => {
   const [ridepopup, setRidepopup] = useState(false);
@@ -109,22 +110,21 @@ const Captainhome = () => {
           <i class="text-lg font-medium ri-logout-box-r-line"></i>
         </Link>
       </div>
-      <div className="h-full">
-        <img
-          className="h-full w-full object-cover  "
-          src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif"
-        />
+      <div className="relative z-0">
+        <LiveTracking />
       </div>
-      <div className=" ">
+      <div className="absolute bottom-0 left-0 w-full z-10">
         <CaptainDetails />
       </div>
       <div
         ref={ridepopupref}
         className="fixed rounded-t-lg w-full translate-y-full z-10 bottom-0  bg-white px-3 py-3 "
       >
-        <RidePopup ride={ride} 
-        confirmRide={confirmRide}
-         setRidepopup={setRidepopup} />
+        <RidePopup
+          ride={ride}
+          confirmRide={confirmRide}
+          setRidepopup={setRidepopup}
+        />
       </div>
     </div>
   );

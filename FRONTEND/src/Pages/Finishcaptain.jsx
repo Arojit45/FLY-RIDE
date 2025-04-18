@@ -1,12 +1,38 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import StarRating from '../components/StarRating';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { UserDataContext } from '../context/Usercontext';
 
 
 const Finishcaptain = () => {
-  
-   const [isChecked, setIsChecked] = useState(false);
- 
+const navigator =useNavigate()
+const [isChecked, setIsChecked] = useState(false);
+const {ridestart} =useContext(UserDataContext)
+
+const handleclick = async()=>{
+  console.log(ridestart._id)
+    try {
+       const response = await axios.post(
+         `${import.meta.env.VITE_BASE_URL}/rides/complete`,
+         {
+           rideId:ridestart._id,
+         },{
+          headers:{
+            Authorization:`Bearer ${localStorage.getItem('token')}`
+          }
+         }
+       );
+       if (response.status === 200) {
+         navigator("/Captainhome");
+       }
+    } catch (error) {
+      console.log(error)
+    }
+    
+
+  }
+    
   return (
     <div className="h-screen flex  w-screen overflow-hidden  gap-3">
       <div className='fixed w-full h-full  justify-center items-center gap-3 z-10 bottom-0 flex flex-col bg-white rounded-t-xl px-1 py-10 pt-14"'>
@@ -76,14 +102,14 @@ const Finishcaptain = () => {
             <StarRating />
           </div>
           <div className="w-full flex  justify-center">
-            <Link
-              to={"/Captainhome"}
+            <div
+              onClick={handleclick}
               className="bg-green-600 w-[90%] flex items-center justify-center text-white rounded-xl h-10 "
             >
               <button form="otpForm" type="submit">
                 Done
               </button>
-            </Link>
+            </div>
           </div>
         </div>
       </div>

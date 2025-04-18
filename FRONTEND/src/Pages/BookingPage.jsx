@@ -7,6 +7,7 @@ import LookingForDriver from "../components/LookingForDriver";
 import  { UserDataContext } from "../context/Usercontext";
 import { Socketcontext } from "../context/Socketcontext";
 import { useNavigate } from "react-router-dom";
+import LiveTracking from "./LiveTracking";
 
 const BookingPage = (props) => {
   const navigate = useNavigate()
@@ -81,10 +82,7 @@ const BookingPage = (props) => {
 
   return (
     <div className="h-screen w-screen overflow-hidden">
-      <img
-        className="h-full w-full object-cover  "
-        src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif"
-      />
+      <LiveTracking/>
       <div className="fixed w-full   z-10 bottom-0   flex flex-col  bg-white px-3 py-10 pt-14">
         <h5 className="p-1 m-1 w-[93%] absolute top-0  text-center ">
           <i

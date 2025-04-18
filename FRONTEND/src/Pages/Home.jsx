@@ -6,6 +6,7 @@ import LocationSearchPanel from "../components/LocationSearchPanel";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { UserDataContext } from "../context/Usercontext";
+import LiveTracking from "./LiveTracking";
 
 
 
@@ -126,13 +127,10 @@ const Home = () => {
         src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png"
         alt=""
       />
-      <div className="h-screen w-screen ">
-        <img
-          className="h-full w-full object-cover"
-          src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif"
-        />
-        <div className=" flex flex-col justify-end h-screen absolute top-0 w-full ">
-          <div className="h-[30%] p-5 bg-white relative">
+      <div className="h-screen w-screen  ">
+       <LiveTracking/>
+        <div className=" flex flex-col justify-end h-screen z-20 absolute top-0 w-full ">
+          <div className=" p-5  bg-white relative">
             <h5
               ref={panelcloseref}
               onClick={() => {
@@ -182,7 +180,7 @@ const Home = () => {
               </button>
             </div>
           </div>
-          <div ref={panelref} className="h-0 bg-white ">
+          <div ref={panelref} className="h-0 bg-white  ">
             <LocationSearchPanel
               suggestion={
                 activeField === "pickup"

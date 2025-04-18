@@ -6,7 +6,7 @@ const CaptainDetails = () => {
   
   return (
     <div>
-      <div className="absolute w-full bottom-0 p-6 bg-white">
+      <div className="absolute  w-full bottom-0 p-6   bg-white">
         <div className="flex items-center justify-between">
           <div className="flex items-center justify-start gap-2">
             <div className="w-16 h-16 bg-gray-200 rounded-full overflow-hidden">
