@@ -34,7 +34,7 @@ if (!confirmcaptain) {
      if (response.status === 200) {
        console.log("Response data:", response.data);
        setRidestart(response.data);
-       navigate("/ride");
+       navigate("/ridecap");
      }
    } catch (error) {
      console.error("Error starting ride:", error);

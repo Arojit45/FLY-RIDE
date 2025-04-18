@@ -10,7 +10,10 @@ const Riding = () => {
   console.log("Ridestart in Riding:", ridestart);
   return (
     <div className="h-screen w-screen">
-      <Link to='/Home'className="fixed right-2 top-2 h-10 w-10 bg-white flex items-center justify-center rounded-full">
+      <Link
+        to="/Home"
+        className="fixed right-2 top-2 h-10 w-10 bg-white flex items-center justify-center rounded-full"
+      >
         <i className="text-lg font-medium ri-home-4-line"></i>
       </Link>
       <div className="h-1/2">
@@ -29,10 +32,12 @@ const Riding = () => {
               />
             </div>
             <div className="flex flex-col  items-end flex-grow px-2 py-1 rounded-md">
-              <h3 className="font-normal text-lg -mt-1">Arojit</h3>
-              <h1 className="text-semibold text-2xl">TRO10234</h1>
+              <h3 className="font-normal text-lg -mt-1 capitalize">{`${ridestart.captain.fullname.firstname} ${ridestart.captain.fullname.lastname}`}</h3>
+              <h1 className="text-semibold text-2xl">
+                {ridestart.captain.Vehicle.plate}
+              </h1>
               <h3 className="font-normal text-base -mt-1">
-                White Suzuki S-Presso LXI
+                {ridestart.captain.Vehicle.vehicleType}
               </h3>
               <h4 className="flex items-center text-lg gap-1">
                 <i className="text-xl ri-star-s-fill text-yellow-500"></i> 4.9
@@ -45,7 +50,7 @@ const Riding = () => {
               <div>
                 <h3 className="text-lg font-medium">56211-A</h3>
                 <p className="text-sm -mt-1 text-gray-600">
-                  Kankariya Talab, Gujrath
+                  {ridestart.destination.name}
                 </p>
               </div>
             </div>
@@ -53,15 +58,17 @@ const Riding = () => {
             <div className="flex items-center gap-4 p-5 ">
               <i className="text-lg ri-currency-line"></i>
               <div>
-                <h3 className="text-lg font-medium">₹193.30</h3>
+                <h3 className="text-lg font-medium">₹{ridestart.fare}</h3>
                 <p className="text-sm -mt-1 text-gray-600">Cash</p>
               </div>
             </div>
           </div>
         </div>
-        <button className="w-full  bg-green-600 text-white font-semibold p-2 rounded-lg">
-          Make a payment
-        </button>
+        <Link to={"/finishuser"}>
+          <button className="w-full  bg-green-600 text-white font-semibold p-2 rounded-lg">
+            Make a payment
+          </button>
+        </Link>
       </div>
     </div>
   );

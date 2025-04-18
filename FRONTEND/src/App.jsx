@@ -15,6 +15,9 @@ import WaitingDriver from "./Pages/WaitingDriver";
 import Riding from "./Pages/Riding";
 import RideDetails from "./Pages/RideDetails";
 import CaptainRiding from "./Pages/CaptainRiding";
+import RidingCap from "./Pages/RidingCap";
+import Finishcaptain from "./Pages/Finishcaptain";
+import Finishuser from "./Pages/Finishuser";
 
 
 const App = () => {
@@ -47,6 +50,9 @@ const App = () => {
         <Route path="/ride" element={<Riding/>}/>
         <Route path="/Ridedetail" element={<RideDetails/>}/>
         <Route path="/CaptainRiding"element={<CaptainRiding/>}/>
+        <Route path="/ridecap" element={<RidingCap/>}/>
+        <Route path="/finishcap" element={<Finishcaptain/>}/>
+        <Route path="/finishuser" element={<Finishuser/>}/>
         <Route
           path="/Captainhome"
           element={
