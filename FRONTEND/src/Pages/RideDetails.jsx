@@ -1,14 +1,45 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { CaptainDataContext } from "../context/Captaincontext";
+import { Socketcontext } from "../context/Socketcontext";
+import axios from 'axios'
+import { UserDataContext } from "../context/Usercontext";
 
 const RideDetails = (props) => {
-    const [otp, setOtp] = useState('')
-    const navigate = useNavigate()
-    const submithadler=(e)=>{
-        e.preventdefault()
-    }
+  const { confirmcaptain, setConfirmcaptain } = useContext(CaptainDataContext);
+  const { ridedata,setRidedata,setRidestart,ridestart} = useContext(UserDataContext);
+  const {socket,sendMessage,receiveMessage} = useContext(Socketcontext)
+  const [otp, setOtp] = useState('')
+  const navigate = useNavigate()
+console.log("confirmcaptain:", confirmcaptain);
+if (!confirmcaptain) {
+  return <div>Loading...</div>; 
+}
+ const submithadler = async (e) => {
+   e.preventDefault();
+   try {
+     const response = await axios.get(
+       `${import.meta.env.VITE_BASE_URL}/rides/start-ride`,
+       {
+         params: {
+           rideId: confirmcaptain._id,
+           otp: otp,
+         },
+         headers: {
+           Authorization: `Bearer ${localStorage.getItem("token")}`,
+         },
+       }
+     );
 
-    
+     if (response.status === 200) {
+       console.log("Response data:", response.data);
+       setRidestart(response.data);
+       navigate("/ride");
+     }
+   } catch (error) {
+     console.error("Error starting ride:", error);
+   }
+ };   
   return (
     <div className="h-screen flex flex-col w-screen p-2 gap-3">
       <h5
@@ -28,7 +59,9 @@ const RideDetails = (props) => {
             />
           </div>
           <div className="flex items-center">
-            <h3 className="text-lg font-medium">Ananya pandey</h3>
+            <h3 className="text-lg font-medium">
+              {confirmcaptain.user.fullname.firstname}
+            </h3>
           </div>
         </div>
 
@@ -42,7 +75,7 @@ const RideDetails = (props) => {
           <h5 className="text-sm font-extralight text-gray-300">Pick up</h5>
           <h3 className="text-lg font-medium">56211-A</h3>
           <p className="text-sm -mt-1 text-gray-600">
-            Kankariya Talab, Gujrath
+            {confirmcaptain.pickup.name}
           </p>
         </div>
       </div>
@@ -51,7 +84,7 @@ const RideDetails = (props) => {
           <h5 className="text-sm font-extralight text-gray-300">Drop Off</h5>
           <h3 className="text-lg font-medium">56211-A</h3>
           <p className="text-sm -mt-1 text-gray-600">
-            Kankariya Talab, Gujrath
+            {confirmcaptain.destination.name}
           </p>
         </div>
       </div>
@@ -59,7 +92,7 @@ const RideDetails = (props) => {
         <h5 className="text-sm font-extralight text-gray-300">Trip Fare</h5>
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold">Google Pay</h3>
-          <h3 className="text-lg font-semibold">₹293.30</h3>
+          <h3 className="text-lg font-semibold">₹{confirmcaptain.fare}</h3>
         </div>
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold">Discount</h3>
@@ -67,17 +100,16 @@ const RideDetails = (props) => {
         </div>
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold">Paid Amount</h3>
-          <h3 className="text-lg font-semibold">₹280.30</h3>
+          <h3 className="text-lg font-semibold">₹{confirmcaptain.fare}</h3>
         </div>
       </div>
       <div className=" p-4 ">
-        <form onSubmit={(e) => { submithadler(e); 
-         }}>
+        <form id="otpForm" onSubmit={submithadler}>
           <input
-          value={otp}
-          onChange={()=>{
-            setOtp(e.target.value)
-          }}
+            value={otp}
+            onChange={(e) => {
+              setOtp(e.target.value);
+            }}
             type="text"
             className="bg-[#eee] font-mono px-6 py-4 text-base rounded-lg w-full mt-3"
             placeholder="Enter OTP"
@@ -85,12 +117,15 @@ const RideDetails = (props) => {
         </form>
       </div>
       <div className="flex mt-2 p-4 items-center flex-col w-full  justify-end gap-3">
-        <Link
-          to={"/CaptainRiding"}
+        <div
+          form="otpForm"
+          type="submit"
           className="bg-green-600 w-full flex items-center justify-center text-white rounded-xl h-10 "
         >
-          <button>confirm ride</button>
-        </Link>
+          <button form="otpForm" type="submit">
+            confirm ride
+          </button>
+        </div>
         <div
           onClick={() => {
             navigate("/Captainhome");

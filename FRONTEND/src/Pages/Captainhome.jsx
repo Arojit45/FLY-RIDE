@@ -85,7 +85,10 @@ const Captainhome = () => {
          },
        }
      );
+     console.log(response.data)
      setConfirmcaptain(response.data)
+     console.log("Updated confirmcaptain:", response.data);
+     
 
    } catch (error) {
      console.error("Error:", error.response?.data || error.message);

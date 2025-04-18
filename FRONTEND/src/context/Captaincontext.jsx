@@ -20,6 +20,8 @@ const CaptainContext = ({ children }) => {
     error,
     setError,
     updateCaptain,
+    confirmcaptain,
+    setConfirmcaptain,
   };
 
   return (

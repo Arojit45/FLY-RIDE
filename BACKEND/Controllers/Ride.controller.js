@@ -107,3 +107,27 @@ module.exports.confirmRide = async (req,res)=>{
   }
 
 }
+
+module.exports.startRide = async (req,res)=>{
+  const error = validationResult(req);
+  if (!error.isEmpty()) {
+    return res.status(400).json({ error: error.array() });
+  }
+   const { rideId,otp } = req.query;
+
+   try {
+    const ride = await rideService.startRide({rideId,otp,captain:req.captain})
+   if (ride?.user?.socketID) {
+     console.log("Emitting ride-started to socket:", ride.user.socketID);
+     sendMessageToSocketId(ride.user.socketID, {
+       events: "ride-started",
+       data: ride,
+     });
+   } else {
+     console.warn("No socketId found for user");
+   }
+    return res.status(200).json(ride)
+   } catch (error) {
+    return res.status(500).json({message:error.message})
+   }
+}

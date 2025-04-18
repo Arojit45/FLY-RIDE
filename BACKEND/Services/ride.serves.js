@@ -1,7 +1,8 @@
 const rideModel = require("../Models/ride.model");
-const riderModal = require("../Models/ride.model");
+const riderModal = require('../Models/ride.model')
 const mapsService = require("../Services/maps.serves");
 const crypto = require("crypto");
+const { sendMessageToSocketId } = require("../Socket");
 
 async function getFare(pickup, destination, vehicleType) {
   if (!pickup || !destination || !vehicleType) {
@@ -177,3 +178,27 @@ module.exports.confirmRide = async ({ rideId, captain }) => {
   }
   return ride;
 };
+
+module.exports.startRide = async ({rideId,captain,otp})=>{
+  if(!rideId||!otp){
+    throw new Error('All fields are required')
+  }
+ const ride = await rideModel
+   .findOne({ _id: rideId })
+   .populate("captain")
+   .populate("user")
+
+  if(!ride){
+    throw new Error('Ride not found')
+  }
+  if(ride.otp !== otp){
+    throw new Error('Ride not accepted or otp Invalid')
+  }
+  await rideModel.findOneAndUpdate({
+    _id:rideId
+  },{
+    status:'ongoing'
+  })
+
+  return ride;
+}

@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { UserDataContext } from "../context/Usercontext";
+import { CaptainDataContext } from "../context/Captaincontext";
 
 
 const Riding = () => {
+  const { confirmcaptain, setConfirmcaptain } = useContext(CaptainDataContext);
+  const { ridestart } = useContext(UserDataContext);
+  console.log("Ridestart in Riding:", ridestart);
   return (
     <div className="h-screen w-screen">
       <Link to='/Home'className="fixed right-2 top-2 h-10 w-10 bg-white flex items-center justify-center rounded-full">

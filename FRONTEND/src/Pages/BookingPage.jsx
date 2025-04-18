@@ -77,6 +77,8 @@ const BookingPage = (props) => {
     console.log(setRidedata)
   });
 
+ 
+
   return (
     <div className="h-screen w-screen overflow-hidden">
       <img
